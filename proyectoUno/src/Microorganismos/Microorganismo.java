@@ -4,8 +4,11 @@ import Alimento.Alimento;
 import Constants.*;
 import Mapa.Mapa;
 
+// luego podemos reacomodar los metodos de la clase para que no este tan desordenado
+
 public class Microorganismo {
     private int vision;
+    private int velocidad;
     private int xLocation;
     private int yLocation;
     
@@ -13,6 +16,7 @@ public class Microorganismo {
     private Random rand = new Random(12345678);
 
     public Microorganismo(int xLocation, int yLocation){
+        this.velocidad = CharConstants.MIN_VISION + rand.nextInt(CharConstants.MAX_VISION);
         this.vision = CharConstants.MIN_VISION + rand.nextInt(CharConstants.MAX_VISION);  // este rand hay que revisarlo
         // la ubicacion del microorganismo en el mapa
         this.xLocation = xLocation;
@@ -47,6 +51,21 @@ public class Microorganismo {
         return pColumna;
     }
 
+    // pueden haber dos metodos comer, uno de alimento y otro de microorganismos
+    public void comer(Alimento pAlimento){
+        pAlimento.AlimentarMicro(this);
+
+    }
+
+    public void comer(Microorganismo pMicroorganismo){
+        
+    }
+
+    public void moverse(){
+        // falta
+
+    }
+
 
     public void visualizar(Mapa pMap){
         // esto se ve un poco feo, hay que ver como mejorarlo
@@ -72,23 +91,27 @@ public class Microorganismo {
                 }
             }
         }
+    }
 
+    private void decrementarVelocidad(){
+        // apenas el microorganismo aumente de energia llame a este metodo para decrementar la velocidad
+        this.velocidad -= IncDecConstants.DEC_CHARS;
+        if(this.velocidad < 0){
+            this.velocidad = 0;
+        }
 
         
-    
-
+        
     }
     
-    // pueden haber dos metodos comer, uno de alimento y otro de microorganismos
-    public void comer(Alimento pAlimento){
-        pAlimento.AlimentarMicro(this);
-
-    }
 
     public void decrementarVision(){
         // debe de haber un metodo moverse en el microorganismo en donde cada vez que se alimente
         // y aumente su vida, llame a este metodo para decrementar su vision
-        this.vision -= Constants.IncDecConstants.DEC_VISION; 
+        this.vision -= IncDecConstants.DEC_CHARS; 
+        if(this.vision < 0){
+            this.vision = 0;
+        }
     }
 
     
@@ -99,6 +122,14 @@ public class Microorganismo {
 
     public void setVision(int vision) {
         this.vision = vision;
+    }
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
     }
 
 

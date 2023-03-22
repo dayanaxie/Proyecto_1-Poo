@@ -1,10 +1,11 @@
 package Constants;
 
 public class IncDecConstants {
-    // incremento de vision
-    public static final int INC_VISION = 2;     //tengo que preguntar sobre esto
+    // grado de incremento
+    public static final int INC_CHARS = 2;
 
-    //decremento de vision
-    public static final int DEC_VISION = 1;
+    // grado de decremento
+    public static final int DEC_CHARS = 2;
+
     
 }
