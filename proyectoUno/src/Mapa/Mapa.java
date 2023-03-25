@@ -1,12 +1,12 @@
 package Mapa;
+import Constants.Constants;
+
 
 public class Mapa {
-    private int size;
     private Object map [][];
 
     public Mapa(){
-        this.size = 50;
-        this.map = new Object[this.size][this.size];
+        this.map = new Object[Constants.MAP_SIZE][Constants.MAP_SIZE];
 
     }
 

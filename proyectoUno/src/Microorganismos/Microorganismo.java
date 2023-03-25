@@ -16,8 +16,8 @@ public class Microorganismo {
     private Random rand = new Random(12345678);
 
     public Microorganismo(int xLocation, int yLocation){
-        this.velocidad = CharConstants.MIN_VISION + rand.nextInt(CharConstants.MAX_VISION);
-        this.vision = CharConstants.MIN_VISION + rand.nextInt(CharConstants.MAX_VISION);  // este rand hay que revisarlo
+        this.velocidad = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);
+        this.vision = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);  // este rand hay que revisarlo
         // la ubicacion del microorganismo en el mapa
         this.xLocation = xLocation;
         this.yLocation = yLocation;
@@ -95,7 +95,7 @@ public class Microorganismo {
 
     private void decrementarVelocidad(){
         // apenas el microorganismo aumente de energia llame a este metodo para decrementar la velocidad
-        this.velocidad -= IncDecConstants.DEC_CHARS;
+        this.velocidad -= Constants.DEC_CHARS;
         if(this.velocidad < 0){
             this.velocidad = 0;
         }
@@ -108,7 +108,7 @@ public class Microorganismo {
     public void decrementarVision(){
         // debe de haber un metodo moverse en el microorganismo en donde cada vez que se alimente
         // y aumente su vida, llame a este metodo para decrementar su vision
-        this.vision -= IncDecConstants.DEC_CHARS; 
+        this.vision -= Constants.DEC_CHARS; 
         if(this.vision < 0){
             this.vision = 0;
         }
