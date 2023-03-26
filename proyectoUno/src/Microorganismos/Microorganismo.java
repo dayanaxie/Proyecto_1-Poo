@@ -62,8 +62,29 @@ public class Microorganismo {
     }
 
     public void moverse(){
-        // falta
+        // se aplica la personalidad aqui
 
+    }
+
+    // despues de todos los moverse se actualiza el mapa
+    public void moverArriba(Object map [][]){
+        this.xLocation -= this.velocidad;
+        this.xLocation = verificarFila(this.xLocation, map);
+    }
+
+    public void moverAbajo(Object map [][]){
+        this.xLocation += this.velocidad;
+        this.xLocation = verificarFila(this.xLocation, map);
+    }
+
+    public void moverIzquierda(Object map [][]){
+        this.yLocation -= this.velocidad;
+        this.yLocation = verificarColumna(this.yLocation, map);
+    }
+
+    public void moverDerecha(Object map [][]){
+        this.yLocation += this.velocidad;
+        this.yLocation = verificarColumna(this.yLocation, map);
     }
 
 
