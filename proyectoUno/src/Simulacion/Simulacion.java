@@ -1,34 +1,35 @@
 package Simulacion;
 
 import Alimento.AlimentoVision;
+import Microorganismos.Jugador;
 import Microorganismos.Microorganismo;
 import GUI.Gui;
+import Mapa.Mapa;
 
  
 public class Simulacion {
     public static void main(String[] args) throws Exception {
-        //Gui interfaz = new Gui();
-        // va a haber un metodo para mover derecha, izq, arriba y abajo
-        int map [][] = {{0,0,1,0}, {0,0,0,0}, {1,0,7,1}, {0,0,0,0}, {0,0,1,0}};
-        int vision = 2;
-        int coordsX = 2;
-        int coordsY = 2;
-        System.out.println("Yo: " + map[coordsX][coordsY]);
+        Gui interfaz = new Gui();
+        Jugador jugador = new Jugador(0, 0);
+        Mapa mapa = new Mapa();
+        mapa.insertarJugador(interfaz, jugador);
 
+        /*\
+        1. Se genera el mapa, incluyendo al jugador, partículas de alimento.
+        2. Se crea la lista de organismos en posiciones aleatorias en el mapa.
+        3. Después de cada movimiento del jugador:
+        a) Se recorre la estructura de organismos para determinar su
+        siguiente acción, i.e. hacia donde se moverán, etc.
 
-        
-    }
+        b) Si una partícula de alimento es consumida, se genera una nue-
+        va para reemplazarla.
 
-    public void moverArriba(int vision, int x, int map [][]){
-        x -= vision;
-        if(x < 0){
-            x = 0;
-        }
+        c) Si un organismo es consumido se genera uno nuevo para reem-
+        plazarlo.
 
+        d) Se actualiza la interfaz gráfica.
+         */
 
-
-
-        
     }
     
 }

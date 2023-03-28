@@ -16,7 +16,8 @@ public class Microorganismo {
     private Random rand = new Random(12345678);
 
     public Microorganismo(int xLocation, int yLocation){
-        this.velocidad = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);
+        velocidad = 1;
+        //this.velocidad = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);
         this.vision = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);  // este rand hay que revisarlo
         // la ubicacion del microorganismo en el mapa
         this.xLocation = xLocation;
@@ -136,6 +137,22 @@ public class Microorganismo {
     }
 
     
+
+    public int getxLocation() {
+        return xLocation;
+    }
+
+    public void setxLocation(int xLocation) {
+        this.xLocation = xLocation;
+    }
+
+    public int getyLocation() {
+        return yLocation;
+    }
+
+    public void setyLocation(int yLocation) {
+        this.yLocation = yLocation;
+    }
 
     public int getVision() {
         return vision;

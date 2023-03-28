@@ -9,12 +9,5 @@ public class Jugador extends Microorganismo{
         super(xLocation,yLocation); 
     }
 
-
-    // aqui se hace la sobreescritura del metodo que ya se encarga el jugador de controlar
-    @Override
-    public void moverse(){
-        // falta completarlo
-
-    }
     
 }
