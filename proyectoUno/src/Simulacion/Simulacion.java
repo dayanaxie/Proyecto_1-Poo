@@ -6,13 +6,28 @@ import Microorganismos.Microorganismo;
 import GUI.Gui;
 import Mapa.Mapa;
 
- 
+/*
+nada de aqui es definitivo aun, es solo para ir probando las cosas de la interfaz
+ */ 
+
 public class Simulacion {
     public static void main(String[] args) throws Exception {
+        int turno = 1;
+        boolean seguir = true;
         Gui interfaz = new Gui();
         Jugador jugador = new Jugador(0, 0);
         Mapa mapa = new Mapa();
         mapa.insertarJugador(interfaz, jugador);
+        interfaz.mostrarTurno(turno);
+        //while(seguir){
+            // aqui se va a ir estructurando la simulacion
+
+        //     turno += 1; 
+        //     interfaz.actualizarTurno(turno);
+
+
+        //}
+        
 
         /*\
         1. Se genera el mapa, incluyendo al jugador, partículas de alimento.

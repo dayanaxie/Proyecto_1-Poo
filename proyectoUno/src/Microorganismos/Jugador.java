@@ -7,6 +7,7 @@ public class Jugador extends Microorganismo{
         // importante recordar, no pueden haber dos cosas en una casilla del mapa
         // tenemos que haccer una validacion de eso
         super(xLocation,yLocation); 
+
     }
 
     

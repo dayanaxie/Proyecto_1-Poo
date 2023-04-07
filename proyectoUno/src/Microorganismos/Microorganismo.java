@@ -2,6 +2,7 @@ package Microorganismos;
 import java.util.Random;
 import Alimento.Alimento;
 import Constants.*;
+import Excepcion.MiExcepcion;
 import Mapa.Mapa;
 
 // luego podemos reacomodar los metodos de la clase para que no este tan desordenado
@@ -11,11 +12,13 @@ public class Microorganismo {
     private int velocidad;
     private int xLocation;
     private int yLocation;
+    private int pasos;
     
 
     private Random rand = new Random(12345678);
 
     public Microorganismo(int xLocation, int yLocation){
+        pasos = 0; 
         velocidad = 1;
         //this.velocidad = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);
         this.vision = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);  // este rand hay que revisarlo
@@ -26,30 +29,38 @@ public class Microorganismo {
 
     }
 
-    private int verificarFila(int pFila, Object[][] pMapGame){
-        // metodo para verificar que a la hora de recorrer las filas del mapa
-        // no se salga
-        if(pFila >= pMapGame.length){
-            pFila = pMapGame.length -1;
+    /*
+     * la idea es que el mismo microorganismo sepa limitar sus propios movimientos
+     */
+    public boolean posibilidadMoverse(){
+        if(pasos < velocidad){
+            return true;
+        }else{
+            return false;
         }
-        else if(pFila < 0){
-            pFila = 0;
-        }
-        return pFila;
-
     }
 
-    private int verificarColumna(int pColumna, Object[][] pMapGame){
-        // metodo para verificar que a la hora de recorrer las columnas del mapa
-        // no se salga
-        if(pColumna >= pMapGame[0].length){
-            pColumna = pMapGame[0].length - 1;
-        }
-        else if(pColumna < 0){
-            pColumna = 0;
-        }
+    public void resetPasos(){
+        pasos = 0;
+    }
 
-        return pColumna;
+    private void verificarPosicion() throws MiExcepcion{
+        if(xLocation >= Constants.MAP_SIZE || yLocation >= Constants.MAP_SIZE || xLocation <  0 || yLocation < 0 ){
+            throw new MiExcepcion();
+        }
+    }
+
+    private int verificarLimiteVision(int pNum){
+        // metodo para verificar que a la hora de recorrer las filas del mapa
+        // no se salga
+        if(pNum >= Constants.MAP_SIZE){
+            pNum = Constants.MAP_SIZE -1;
+        }
+        else if(pNum < 0){
+            pNum = 0;
+        }
+        return pNum;
+
     }
 
     // pueden haber dos metodos comer, uno de alimento y otro de microorganismos
@@ -68,24 +79,49 @@ public class Microorganismo {
     }
 
     // despues de todos los moverse se actualiza el mapa
-    public void moverArriba(Object map [][]){
+    public void moverArriba(){
         this.xLocation -= this.velocidad;
-        this.xLocation = verificarFila(this.xLocation, map);
+        try{
+            verificarPosicion();
+        }catch(MiExcepcion e){
+            this.xLocation = 0;
+        }
+
+        //this.xLocation = verificarFila(this.xLocation, map);
+        pasos += 1;
     }
 
-    public void moverAbajo(Object map [][]){
+    public void moverAbajo(){
         this.xLocation += this.velocidad;
-        this.xLocation = verificarFila(this.xLocation, map);
+        try{
+            verificarPosicion();
+        }catch(MiExcepcion e){
+            this.xLocation = Constants.MAP_SIZE -1;
+        }
+        //this.xLocation = verificarFila(this.xLocation, map);
+        pasos += 1;
     }
 
-    public void moverIzquierda(Object map [][]){
+    public void moverIzquierda(){
         this.yLocation -= this.velocidad;
-        this.yLocation = verificarColumna(this.yLocation, map);
+        try{
+            verificarPosicion();
+        }catch(MiExcepcion e){
+            this.yLocation = 0;
+        }
+        //this.yLocation = verificarColumna(this.yLocation, map);
+        pasos += 1;
     }
 
-    public void moverDerecha(Object map [][]){
+    public void moverDerecha(){
         this.yLocation += this.velocidad;
-        this.yLocation = verificarColumna(this.yLocation, map);
+        try{
+            verificarPosicion();
+        }catch(MiExcepcion e){
+            this.yLocation = Constants.MAP_SIZE -1;
+        }
+        //this.yLocation = verificarColumna(this.yLocation, map);
+        pasos += 1;
     }
 
 
@@ -93,13 +129,13 @@ public class Microorganismo {
         // esto se ve un poco feo, hay que ver como mejorarlo
         Object mapGame [][] = pMap.getMap();
         int limiteFila = this.xLocation + this.vision;
-        limiteFila = verificarFila(limiteFila, mapGame);
+        limiteFila = verificarLimiteVision(limiteFila);
         int inicioFila = this.xLocation - this.vision;
-        inicioFila = verificarFila(inicioFila, mapGame);
+        inicioFila = verificarLimiteVision(inicioFila);
         int limiteColumna = this.yLocation + this.vision;
-        limiteColumna = verificarColumna(limiteColumna, mapGame);
+        limiteColumna = verificarLimiteVision(limiteColumna);
         int inicioColumna = this.yLocation - this.vision;
-        inicioColumna = verificarColumna(inicioColumna, mapGame);
+        inicioColumna = verificarLimiteVision(inicioColumna);
 
         for(int fila = inicioFila; fila <= limiteFila; ++fila){
             //columna
@@ -120,10 +156,15 @@ public class Microorganismo {
         this.velocidad -= Constants.DEC_CHARS;
         if(this.velocidad < 0){
             this.velocidad = 0;
-        }
+        }        
+    }
 
-        
-        
+    public String obtenerInfo(){
+        String info = "Tiene: " + "velocidad: " + Integer.toString(velocidad) 
+        + ", " +  "vision: " + Integer.toString(vision);
+    
+        return info;
+
     }
     
 
@@ -168,6 +209,14 @@ public class Microorganismo {
 
     public void setVelocidad(int velocidad) {
         this.velocidad = velocidad;
+    }
+
+    public int getPasos() {
+        return pasos;
+    }
+
+    public void setPasos(int pasos) {
+        this.pasos = pasos;
     }
 
 
