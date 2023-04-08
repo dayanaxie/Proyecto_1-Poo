@@ -15,18 +15,15 @@ public class Microorganismo {
     private int pasos;
     
 
-    private Random rand = new Random(12345678);
+    private Random rand;
 
-    public Microorganismo(int xLocation, int yLocation){
+    public Microorganismo(int xLocation, int yLocation, Random pRand){
+        rand = pRand;
         pasos = 0; 
-        velocidad = 1;
-        //this.velocidad = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);
-        this.vision = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);  // este rand hay que revisarlo
-        // la ubicacion del microorganismo en el mapa
+        velocidad = Constants.MIN_VELOCIDAD + rand.nextInt(Constants.MAX_VELOCIDAD);
+        this.vision = Constants.MIN_VISION + rand.nextInt(Constants.MAX_VISION);  
         this.xLocation = xLocation;
         this.yLocation = yLocation;
-        
-
     }
 
     /*
@@ -80,7 +77,7 @@ public class Microorganismo {
 
     // despues de todos los moverse se actualiza el mapa
     public void moverArriba(){
-        this.xLocation -= this.velocidad;
+        this.xLocation -= 1;
         try{
             verificarPosicion();
         }catch(MiExcepcion e){
@@ -92,7 +89,7 @@ public class Microorganismo {
     }
 
     public void moverAbajo(){
-        this.xLocation += this.velocidad;
+        this.xLocation += 1;
         try{
             verificarPosicion();
         }catch(MiExcepcion e){
@@ -103,7 +100,7 @@ public class Microorganismo {
     }
 
     public void moverIzquierda(){
-        this.yLocation -= this.velocidad;
+        this.yLocation -= 1;
         try{
             verificarPosicion();
         }catch(MiExcepcion e){
@@ -114,7 +111,7 @@ public class Microorganismo {
     }
 
     public void moverDerecha(){
-        this.yLocation += this.velocidad;
+        this.yLocation += 1;
         try{
             verificarPosicion();
         }catch(MiExcepcion e){

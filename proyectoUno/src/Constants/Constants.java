@@ -25,5 +25,9 @@ public class Constants {
     public static final int DEC_CHARS = 2;
     // tamanio del mapa
     public static final int MAP_SIZE = 50;
+
+    public static final int CANT_MICRO = 20;
+
+    public static final int CANT_ALIMENTO = 10;
     
 }

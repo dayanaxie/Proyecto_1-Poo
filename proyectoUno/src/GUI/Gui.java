@@ -1,25 +1,25 @@
 package GUI;
-import Constants.Constants;
+import Constants.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Panel;
 import java.awt.event.*;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import Alimento.Alimento;
 import Mapa.Mapa;
 import Microorganismos.Jugador;
+import Microorganismos.Microorganismo;
 
 /*
  * Los microorganismos van a ser de color verde
- * Los alimentos van a ser de diferentes tonalidades de gris
+ * Los alimentos van a ser de diferentes tonalidades de gris (light gray, gray y dark gray)
  * El jugador va a ser de color azul
  */
 
@@ -56,7 +56,7 @@ public class Gui implements ActionListener{
                 JButton boton = new JButton();
                 //boton.setSize(Constants.MAP_SIZE / Constants.MAP_SIZE, Constants.MAP_SIZE / Constants.MAP_SIZE);
                 boton.setBackground(Color.WHITE);
-                boton.setToolTipText(Integer.toString(fila) + ", " + Integer.toString(columna));
+                boton.setToolTipText(Integer.toString(fila) + "," + Integer.toString(columna));
                 boton.addActionListener(this);
                 mapButton[fila][columna] = boton;
                 panelMapa.add(mapButton[fila][columna]);
@@ -111,16 +111,25 @@ public class Gui implements ActionListener{
         colorMicro.setOpaque(true);
         colorMicro.setBackground(Color.GREEN);
 
-        JLabel colorAlimento = new JLabel();
-        JLabel textoAlimento = new JLabel(" Alimentos");
-        colorAlimento.setOpaque(true);
-        colorAlimento.setBackground(Color.gray);
+        JLabel colorAlimentoP = new JLabel();
+        JLabel textoAlimentoP = new JLabel(" AlimEnergia Pequeño");
+        colorAlimentoP.setOpaque(true);
+        colorAlimentoP.setBackground(Color.LIGHT_GRAY);
+
+        JLabel colorAlimentoM = new JLabel();
+        JLabel textoAlimentoM = new JLabel(" Alimentos");
+        colorAlimentoM.setOpaque(true);
+        colorAlimentoM.setBackground(Color.gray);
+
+        JLabel colorAlimentoG = new JLabel();
+        JLabel textoAlimentoG = new JLabel(" AlimEnergia Grande");
+        colorAlimentoG.setOpaque(true);
+        colorAlimentoG.setBackground(Color.DARK_GRAY);
 
         JLabel colorJugador = new JLabel();
         JLabel textoJugador = new JLabel(" Jugador");
         colorJugador.setOpaque(true);
         colorJugador.setBackground(Color.blue);
-        //colorJugador.setMaximumSize(new Dimension(1,1));
 
         JLabel colorVacio = new JLabel();
         JLabel textoVacio = new JLabel(" Casilla vacia");
@@ -129,14 +138,46 @@ public class Gui implements ActionListener{
 
         panelColores.add(colorMicro);
         panelColores.add(textoMicro);
-        panelColores.add(colorAlimento);
-        panelColores.add(textoAlimento);
+        panelColores.add(colorAlimentoP);
+        panelColores.add(textoAlimentoP);
+        panelColores.add(colorAlimentoM);
+        panelColores.add(textoAlimentoM);
+        panelColores.add(colorAlimentoG);
+        panelColores.add(textoAlimentoG);
         panelColores.add(colorJugador);
         panelColores.add(textoJugador);
         panelColores.add(colorVacio);
         panelColores.add(textoVacio);
 
 
+    }
+
+    public void insertarAlimentos(int xLocation, int yLocation, EnumAlimentos type, int size, Mapa pMap){
+        JButton alimento = mapButton[xLocation][yLocation];
+        if(type == EnumAlimentos.ENERGIA){
+           // si es energia su tamanio viene en diferentes tamanios = colores
+            switch(size){
+                case 1: 
+                    alimento.setBackground(Color.LIGHT_GRAY);
+                
+                case 2:
+                    alimento.setBackground(Color.darkGray);
+
+            }      
+        }else{
+            alimento.setBackground(Color.gray);
+        }
+           
+        mapButton[xLocation][yLocation] = alimento;
+        gameMap = pMap;
+
+    }
+
+    public void insertarMicroorganismos(int xLocation, int yLocation, Mapa pMap){
+        JButton micro = mapButton[xLocation][yLocation];
+        micro.setBackground(Color.GREEN);
+        mapButton[xLocation][yLocation] = micro;
+        gameMap = pMap;
     }
 
     public void insertarJugador(int xLocation, int yLocation, Mapa pMap){
@@ -177,7 +218,7 @@ public class Gui implements ActionListener{
     }
     
 
-    private void vaciarCasilla(int xLocation, int yLocation){
+    public void vaciarCasilla(int xLocation, int yLocation){
         JButton boton = mapButton[xLocation][yLocation];
         boton.setBackground(Color.white);
     }
@@ -201,51 +242,70 @@ public class Gui implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         // mientras que el jugador se pueda mover
-        while(gameMap.getJugador().posibilidadMoverse()){
-            if(e.getSource().equals(botonAbajo)){
-                //System.out.println("Entra aqui");
-                vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+        if(e.getSource().equals(botonAbajo)){
+            if(gameMap.getJugador().posibilidadMoverse()){
+                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
                 gameMap.getJugador().moverAbajo();
                 insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
-                //desactivarBotones(botonAbajo);
+                desactivarBotones(botonAbajo);
                 actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            
+
             }
-            if(e.getSource().equals(botonArriba)){
-                vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+        
+        }
+        if(e.getSource().equals(botonArriba)){
+            if(gameMap.getJugador().posibilidadMoverse()){
+                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
                 gameMap.getJugador().moverArriba();
                 insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+                desactivarBotones(botonArriba);
                 actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            
             }
-            if(e.getSource().equals(botonDerecha)){
-                vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+        }
+        if(e.getSource().equals(botonDerecha)){
+            if(gameMap.getJugador().posibilidadMoverse()){
+                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
                 gameMap.getJugador().moverDerecha();
                 insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+                desactivarBotones(botonDerecha);
                 actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            
             }
-            if(e.getSource().equals(botonIzquierda)){
-                vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+        }
+        if(e.getSource().equals(botonIzquierda)){
+            if(gameMap.getJugador().posibilidadMoverse()){
+                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
                 gameMap.getJugador().moverIzquierda();
                 insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+                desactivarBotones(botonIzquierda);
                 actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            
             }
-            
-            JButton botonPresionado = (JButton) e.getSource();
-            Color colorBoton = botonPresionado.getBackground();
-            // MICROORGANISMOS
-            if(colorBoton == Color.GREEN){
-                JOptionPane.showMessageDialog(ventanaMapa, "Aqui vamos a mostrar la info del micro");
-            }
-            if(colorBoton == Color.BLUE){
-                String infoPlayer = gameMap.getJugador().obtenerInfo();
-                JOptionPane.showMessageDialog(ventanaMapa, infoPlayer);
-            }
+        }
+        
+        JButton botonPresionado = (JButton) e.getSource();
+        botonPresionado.getToolTipText();
+        Color colorBoton = botonPresionado.getBackground();
+        // MICROORGANISMOS
+        if(colorBoton == Color.GREEN){
+            String tip = botonPresionado.getToolTipText();
+            String[] texto = tip.split(",");
+            int x = Integer.parseInt(texto[0]);
+            int y = Integer.parseInt(texto[1]);
+            Object map [][] = gameMap.getMap();
+            Microorganismo micro = (Microorganismo)map[x][y];
+            String infoMicro = micro.obtenerInfo();
+            JOptionPane.showMessageDialog(ventanaMapa, infoMicro);
+        }
+        if(colorBoton == Color.BLUE){
+            String infoPlayer = gameMap.getJugador().obtenerInfo();
+            JOptionPane.showMessageDialog(ventanaMapa, infoPlayer);
+        }
             
 
-        }     
+           
     }
     
 }

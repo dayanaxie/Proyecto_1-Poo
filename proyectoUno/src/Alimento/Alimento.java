@@ -1,13 +1,16 @@
 package Alimento;
+import Constants.EnumAlimentos;
 import Microorganismos.Microorganismo;
 
 
 public class Alimento {
     private int size;
-    private int amount;
+    private EnumAlimentos type;
 
-    public Alimento(int pSize){
+    public Alimento(int pSize, EnumAlimentos pType){
         this.size = pSize;
+        this.type = pType;
+
 
     }
 
@@ -21,6 +24,14 @@ public class Alimento {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public EnumAlimentos getType() {
+        return type;
+    }
+
+    public void setType(EnumAlimentos type) {
+        this.type = type;
     }
 
     
