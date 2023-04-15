@@ -6,7 +6,7 @@ public class Jugador extends Microorganismo{
 
     public Jugador(int xLocation, int yLocation, Random pRand){
         // importante recordar, no pueden haber dos cosas en una casilla del mapa
-        // tenemos que haccer una validacion de eso
+        // tenemos que hacer una validacion de eso
         super(xLocation,yLocation, pRand); 
 
     }
