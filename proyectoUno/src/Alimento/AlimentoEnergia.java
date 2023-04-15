@@ -1,16 +1,19 @@
 package Alimento;
-import Constants.EnumAlimentos;
+import ConstantsAndEnums.EnumAlimentos;
 import Microorganismos.Microorganismo;
 
-
 public class AlimentoEnergia extends Alimento{
-    public AlimentoEnergia(int pSize){
-        super(pSize, EnumAlimentos.ENERGIA);
+
+    public AlimentoEnergia(int pSize, int xLocation, int yLocation){
+        super(pSize, EnumAlimentos.ENERGIA, xLocation, yLocation);
     }    
 
+    public AlimentoEnergia(){
+        super();
+    }
+
     public void AlimentarMicro(Microorganismo pMicroorganismo){
-        pMicroorganismo.setEnergia(pMicroorganismo.getEnergia() + super.getSize());
-        pMicroorganismo.decrementarVelocidad();
+        pMicroorganismo.setVelocidad(pMicroorganismo.getEnergia() + super.getSize());
     }
     
 }

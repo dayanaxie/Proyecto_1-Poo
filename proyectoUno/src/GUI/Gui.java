@@ -1,5 +1,5 @@
 package GUI;
-import Constants.*;
+import ConstantsAndEnums.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -63,8 +63,6 @@ public class Gui implements ActionListener{
 
             }
         }
-        //JButton prueba = mapButton[0][0];
-        //prueba.setBackground(Color.GREEN);
         
     }
 
@@ -173,6 +171,13 @@ public class Gui implements ActionListener{
 
     }
 
+    public void moverMicroorganismo(Mapa pMap, Microorganismo pMicroorganismo){
+        pMap.insertarMicroorganismos(this, pMicroorganismo);
+
+    }
+
+
+
     public void insertarMicroorganismos(int xLocation, int yLocation, Mapa pMap){
         JButton micro = mapButton[xLocation][yLocation];
         micro.setBackground(Color.GREEN);
@@ -204,12 +209,6 @@ public class Gui implements ActionListener{
         ventanaMapa.add(panelFlechas, BorderLayout.EAST);
         crearMatrizBotones();
         ventanaMapa.add(panelMapa, BorderLayout.CENTER);
-        
-        //otroPanel = new JPanel();
-        //otroPanel.add(boton);
-
-        //ventanaMapa.add(otroPanel);
-
     }
 
     public void actualizarInterfaz(){
@@ -231,7 +230,7 @@ public class Gui implements ActionListener{
         }    
     }
 
-    private void activarBotones(){
+    public void activarBotones(){
         for(Component component : panelFlechas.getComponents()){
             component.setEnabled(true);
             
@@ -241,48 +240,35 @@ public class Gui implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // mientras que el jugador se pueda mover
         if(e.getSource().equals(botonAbajo)){
-            if(gameMap.getJugador().posibilidadMoverse()){
-                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                gameMap.getJugador().moverAbajo();
-                insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
-                desactivarBotones(botonAbajo);
-                actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
+            gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+            gameMap.getJugador().moverAbajo();
+            insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+            desactivarBotones(botonAbajo);
 
-            }
+            
         
         }
         if(e.getSource().equals(botonArriba)){
-            if(gameMap.getJugador().posibilidadMoverse()){
-                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                gameMap.getJugador().moverArriba();
-                insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
-                desactivarBotones(botonArriba);
-                actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            }
+            gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+            gameMap.getJugador().moverArriba();
+            insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+            desactivarBotones(botonArriba);
+            
         }
         if(e.getSource().equals(botonDerecha)){
-            if(gameMap.getJugador().posibilidadMoverse()){
-                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                gameMap.getJugador().moverDerecha();
-                insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
-                desactivarBotones(botonDerecha);
-                actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            }
+            gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+            gameMap.getJugador().moverDerecha();
+            insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+            desactivarBotones(botonDerecha);
+            
         }
         if(e.getSource().equals(botonIzquierda)){
-            if(gameMap.getJugador().posibilidadMoverse()){
-                gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                //vaciarCasilla(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
-                gameMap.getJugador().moverIzquierda();
-                insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
-                desactivarBotones(botonIzquierda);
-                actualizarInterfaz();   // el actualizar interfaz puede quitarse y ponerse solo una vez al final del turno
-            }
+            gameMap.vaciarCasilla(this, gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation());
+            gameMap.getJugador().moverIzquierda();
+            insertarJugador(gameMap.getJugador().getxLocation(), gameMap.getJugador().getyLocation(), gameMap);
+            desactivarBotones(botonIzquierda);
+            
         }
         
         JButton botonPresionado = (JButton) e.getSource();
